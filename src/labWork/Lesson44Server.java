@@ -15,6 +15,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 
+import java.nio.file.Path;
 import java.util.Map;
 
 import static server.Utils.parseUrlEncoded;
@@ -23,6 +24,8 @@ public class Lesson44Server extends BasicServer {
 
     CandidatesDataModel cModel = new CandidatesDataModel();
     CandidatesDataModel.Candidate candidate = null;
+    UserDataModel userData = new UserDataModel();
+    UserDataModel.User user = null;
     private final static Configuration freemarker = initFreeMarker();
 
 
@@ -32,8 +35,68 @@ public class Lesson44Server extends BasicServer {
         registerGet("/votes", this::getVotes);
         registerPost("/votes", this::postVote);
         registerGet("/thankyou", this::getVote);
+        registerGet("/register", this::handleRegisterGet);
+        registerPost("/register", this::handleRegisterPost);
+        registerGet("/login", this::handleLoginGet);
+        registerPost("/login", this::handleLoginPost);
 
     }
+    public void handleLoginGet(HttpExchange exchange) {
+        Path path = makeFilePath("login.html");
+        sendFile(exchange, path, ContentType.TEXT_HTML);
+    }
+
+    public void handleLoginPost(HttpExchange exchange) {
+        String raw = getBody(exchange);
+        Map<String, String> parsed = parseUrlEncoded(raw, "&");
+
+
+        for (UserDataModel.User logUser: userData.getUsers()) {
+            if (logUser.getEmail().equals(parsed.get("email")) && logUser.getPassword().equals(parsed.get("user-password"))) {
+                user=logUser;
+                break;
+            }
+        }
+
+
+       redirect303(exchange,"/");
+
+    }
+
+
+    private void handleRegisterGet(HttpExchange exchange) {
+        renderTemplate(exchange, "register.html", user);
+    }
+
+    private void handleRegisterPost(HttpExchange exchange) {
+        String raw = getBody(exchange);
+        Map<String, String> parsed = parseUrlEncoded(raw, "&");
+        System.out.println(parsed);
+
+        for (int i = 0; i < userData.getUsers().size(); i++) {
+            if(userData.getUsers().get(i).email.equals(parsed.get("email"))){
+                Path path = makeFilePath("registrationError.html");
+                sendFile(exchange, path, ContentType.TEXT_HTML);
+                return;
+            }
+        }
+
+        String email = parsed.get("email");
+        String password = parsed.get("password");
+        String name = parsed.get("name");
+        if (hasNumber(name) == 1) {
+            Path path = makeFilePath("invalid.html");
+            sendFile(exchange, path, ContentType.TEXT_HTML);
+        } else {
+
+            user = new UserDataModel.User(email, password,name,null);
+            userData.addUsers(user);
+
+            redirect303(exchange, "/login");
+        }
+
+    }
+
 
     private void getVote(HttpExchange exchange) {
         renderTemplate(exchange, "thankyou.html", candidate);
@@ -90,6 +153,15 @@ public class Lesson44Server extends BasicServer {
         } catch (IOException | TemplateException e) {
             e.printStackTrace();
         }
+    }
+
+    public static int hasNumber(String input) {
+        for (char c : input.toCharArray()) {
+            if (Character.isDigit(c)) {
+                return 1;
+            }
+        }
+        return 0;
     }
 
 
