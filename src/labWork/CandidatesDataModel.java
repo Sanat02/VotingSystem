@@ -54,7 +54,7 @@ public class CandidatesDataModel {
                     candidate.setPercentage((int) value);
 
                 });
-        
+
         saveCandidatesToFile();
     }
 
