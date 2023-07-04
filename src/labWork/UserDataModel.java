@@ -16,6 +16,7 @@ import java.util.List;
 public class UserDataModel {
     private List<User> users=new ArrayList<>();
 
+
     public UserDataModel() {
         this.users = readFile();
     }

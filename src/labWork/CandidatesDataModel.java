@@ -19,7 +19,16 @@ import java.util.List;
 public class CandidatesDataModel {
     private List<Candidate> sortedList = new ArrayList<>();
     private List<Candidate> candidates = new ArrayList<>();
+    private UserDataModel.User user=null;
+    private UserDataModel.User lser=new UserDataModel.User("enenen","123333","nina",null);
 
+    public UserDataModel.User getUser() {
+        return user;
+    }
+
+    public void setUser(UserDataModel.User user) {
+        this.user = user;
+    }
 
     public List<Candidate> getSortedList() {
         return sortedList;

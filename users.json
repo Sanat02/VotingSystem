@@ -7,8 +7,10 @@
       "photo": "2.jpg",
       "vote": 3.0,
       "percentage": 50
-    }
+    },
+    "name": "Sancho"
   },
+
   {
     "email": "sia@gmail.com",
     "password": "12345",
@@ -17,7 +19,8 @@
       "photo": "5.jpg",
       "vote": 1.0,
       "percentage": 12
-    }
+    },
+    "name": "Sia"
   },
   {
     "email": "dias@gmail.com",

@@ -64,7 +64,7 @@ public class Lesson44Server extends BasicServer {
                 break;
             }
         }
-
+        cModel.setUser(user);
         redirect303(exchange, "/");
 
     }
@@ -132,6 +132,7 @@ public class Lesson44Server extends BasicServer {
                     break;
                 }
             }
+
             cModel.vote(parsed.get(("candidateName")));
             cModel.setPercentageOfCandidate();
             redirect303(exchange, "/thankyou");
