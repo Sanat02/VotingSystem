@@ -24,13 +24,7 @@ public class CandidatesDataModel {
         return sortedList;
     }
 
-    public void setSortedList(List<Candidate> sortedList) {
-        this.sortedList = sortedList;
-    }
 
-    public void setCandidates(List<Candidate> candidates) {
-        this.candidates = candidates;
-    }
 
     public CandidatesDataModel() {
         this.candidates = readFile();
@@ -60,7 +54,7 @@ public class CandidatesDataModel {
                     candidate.setPercentage((int) value);
 
                 });
-        System.out.println(total);
+        
         saveCandidatesToFile();
     }
 
@@ -109,9 +103,7 @@ public class CandidatesDataModel {
             this.percentage = percentage;
         }
 
-        public void setPhoto(String photo) {
-            this.photo = photo;
-        }
+
 
         public double getVote() {
             return vote;
@@ -130,16 +122,12 @@ public class CandidatesDataModel {
             return name;
         }
 
-        public void setName(String name) {
-            this.name = name;
-        }
+
 
         public String getPhoto() {
             return photo;
         }
 
-        public void setImage(String photo) {
-            this.photo = photo;
-        }
+
     }
 }
