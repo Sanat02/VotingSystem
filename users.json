@@ -1,11 +1,23 @@
 [
   {
     "email": "sancho@gmail.com",
-    "password": "12345"
+    "password": "12345",
+    "candidate": {
+      "name": "Nikita Culler",
+      "photo": "2.jpg",
+      "vote": 3.0,
+      "percentage": 50
+    }
   },
   {
     "email": "sia@gmail.com",
-    "password": "12345"
+    "password": "12345",
+    "candidate": {
+      "name": "Hubert Takahashi",
+      "photo": "5.jpg",
+      "vote": 1.0,
+      "percentage": 12
+    }
   },
   {
     "email": "dias@gmail.com",
@@ -16,5 +28,16 @@
     "email": "fia@gmail.com",
     "password": "12345",
     "name": "Fiana"
+  },
+  {
+    "email": "dora@gmail.com",
+    "password": "12345",
+    "candidate": {
+      "name": "Hershel Caffrey",
+      "photo": "6.jpg",
+      "vote": 0.0,
+      "percentage": 0
+    },
+    "name": "Dora"
   }
 ]

@@ -2,14 +2,14 @@
   {
     "name": "Markus Sillman",
     "photo": "1.jpg",
-    "vote": 0.0,
-    "percentage": 0
+    "vote": 3.0,
+    "percentage": 33
   },
   {
     "name": "Nikita Culler",
     "photo": "2.jpg",
-    "vote": 0.0,
-    "percentage": 0
+    "vote": 4.0,
+    "percentage": 44
   },
   {
     "name": "Tawanna Melanson",
@@ -26,13 +26,13 @@
   {
     "name": "Hubert Takahashi",
     "photo": "5.jpg",
-    "vote": 0.0,
-    "percentage": 0
+    "vote": 1.0,
+    "percentage": 11
   },
   {
     "name": "Hershel Caffrey",
     "photo": "6.jpg",
-    "vote": 0.0,
-    "percentage": 0
+    "vote": 1.0,
+    "percentage": 11
   }
 ]

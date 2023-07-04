@@ -39,8 +39,15 @@ public class Lesson44Server extends BasicServer {
         registerPost("/register", this::handleRegisterPost);
         registerGet("/login", this::handleLoginGet);
         registerPost("/login", this::handleLoginPost);
+        registerGet("/logout", this::handleLogOut);
 
     }
+
+    private void handleLogOut(HttpExchange exchange) {
+        user=null;
+        redirect303(exchange,"/");
+    }
+
     public void handleLoginGet(HttpExchange exchange) {
         Path path = makeFilePath("login.html");
         sendFile(exchange, path, ContentType.TEXT_HTML);
@@ -51,15 +58,14 @@ public class Lesson44Server extends BasicServer {
         Map<String, String> parsed = parseUrlEncoded(raw, "&");
 
 
-        for (UserDataModel.User logUser: userData.getUsers()) {
+        for (UserDataModel.User logUser : userData.getUsers()) {
             if (logUser.getEmail().equals(parsed.get("email")) && logUser.getPassword().equals(parsed.get("user-password"))) {
-                user=logUser;
+                user = logUser;
                 break;
             }
         }
 
-
-       redirect303(exchange,"/");
+        redirect303(exchange, "/");
 
     }
 
@@ -74,7 +80,7 @@ public class Lesson44Server extends BasicServer {
         System.out.println(parsed);
 
         for (int i = 0; i < userData.getUsers().size(); i++) {
-            if(userData.getUsers().get(i).email.equals(parsed.get("email"))){
+            if (userData.getUsers().get(i).email.equals(parsed.get("email"))) {
                 Path path = makeFilePath("registrationError.html");
                 sendFile(exchange, path, ContentType.TEXT_HTML);
                 return;
@@ -89,7 +95,7 @@ public class Lesson44Server extends BasicServer {
             sendFile(exchange, path, ContentType.TEXT_HTML);
         } else {
 
-            user = new UserDataModel.User(email, password,name,null);
+            user = new UserDataModel.User(email, password, name, null);
             userData.addUsers(user);
 
             redirect303(exchange, "/login");
@@ -103,13 +109,35 @@ public class Lesson44Server extends BasicServer {
     }
 
     private void postVote(HttpExchange exchange) {
-        String raw = getBody(exchange);
-        Map<String, String> parsed = parseUrlEncoded(raw, "&");
-        System.out.println(parsed);
-        candidate = cModel.getCandidates().stream().filter(c -> c.getName().equals(parsed.get("candidateName"))).findFirst().orElse(null);
-        cModel.vote(parsed.get(("candidateName")));
-        cModel.setPercentageOfCandidate();
-        redirect303(exchange, "/thankyou");
+        System.out.println();
+        if (user.getCandidate()!=null) {
+            Path path = makeFilePath("errorVote.html");
+            sendFile(exchange,path,ContentType.TEXT_HTML);
+
+
+
+        } else {
+
+
+            String raw = getBody(exchange);
+            Map<String, String> parsed = parseUrlEncoded(raw, "&");
+            System.out.println(parsed);
+            candidate = cModel.getCandidates().stream().filter(c -> c.getName().equals(parsed.get("candidateName"))).findFirst().orElse(null);
+            for(int i=0;i<userData.getUsers().size();i++)
+            {
+                if(userData.getUsers().get(i).getEmail().equals(user.email))
+                {
+                    userData.getUsers().get(i).setCandidate(candidate);
+                    userData.saveCandidatesToFile();
+                    break;
+                }
+            }
+            cModel.vote(parsed.get(("candidateName")));
+            cModel.setPercentageOfCandidate();
+            redirect303(exchange, "/thankyou");
+
+
+        }
     }
 
     private void getVotes(HttpExchange exchange) {
@@ -118,7 +146,13 @@ public class Lesson44Server extends BasicServer {
     }
 
     private void getCandidates(HttpExchange exchange) {
-        renderTemplate(exchange, "candidates.html", cModel);
+        if (user == null) {
+            Path path = makeFilePath("index.html");
+            sendFile(exchange, path, ContentType.TEXT_HTML);
+
+        } else {
+            renderTemplate(exchange, "candidates.html", cModel);
+        }
     }
 
 

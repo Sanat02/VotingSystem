@@ -20,6 +20,7 @@ public class CandidatesDataModel {
     private List<Candidate> sortedList = new ArrayList<>();
     private List<Candidate> candidates = new ArrayList<>();
 
+
     public List<Candidate> getSortedList() {
         return sortedList;
     }
@@ -44,6 +45,7 @@ public class CandidatesDataModel {
         saveCandidatesToFile();
 
     }
+
 
     public void setPercentageOfCandidate() {
         var total = candidates.stream().mapToDouble(e -> e.getVote()).sum();
